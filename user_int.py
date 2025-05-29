@@ -17,7 +17,7 @@ def sign_in():
         b=getpass.getpass("Entrez votre mdp: ")
         c=getpass.getpass("Confirmez votre mdp: ")
 
-        if a==b:
+        if c==b:
             break
         print("Error, please try again.")
 
@@ -43,13 +43,19 @@ def save_user(name,pswrd):
 
 def ask_user_auth():
     print("Veuillez saisir votre nom et mdp")
-    a=input("Entrez votre nom: ")
-    b=input("Entrez votre mdp: ")
-
-    if check_user_db_up(a,b):
-        return a,b
-    else:
-        return False
+    
+    c=0
+    while c<=3:
+        a=input("Entrez votre nom: ")
+        b=getpass.getpass("Entrez votre mdp: ")
+        check=check_user_db_up(a,b)
+        if check[0]:
+            return a,b,check[1]
+        else:
+            print("ERROR, User Name or MDP wrong, please try again")
+            c+=1
+    print("You have tried to join 3 times, The program will terminate immediately")
+    quit()
 
 def check_user_db_up(user,pswrd):
     if os.path.isfile("user_db.csv"):
@@ -59,9 +65,10 @@ def check_user_db_up(user,pswrd):
         file.close()
 
         for line in lines:
-            line=line.split(",")
+            line=line.strip().split(",")
             if line[0]==user and line[1]==pswrd:
-                return True
+                c=line[2]
+                return True,c
         return False
     
 def check_user_db_u(user):

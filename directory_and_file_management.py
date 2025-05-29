@@ -1,30 +1,34 @@
 import os
+import rep_ctrl
 
 #GOLBAL VARIABLES
 main_dir=""
 
+#to delete when exporting
+rep_ctrl.chg_to_curr_rep()
+main_dir="D:/ProjetPython"
+
+import os
+
 def check_main_dir():
     print("This is the actual directory :")
-    os.getcwd
+    print(os.getcwd())
 
-    a=input("Do you want to change it ? (y/n) :")
-    b=True #loop activator
-
-    while b==True:
-        if a=="y" or a=="yes":
-            chg_main_dir()
-            b=False
-            return True
-        elif a=="n" or a=="no":
-            b=False
-            return False
-        else:
-            print("Answer non-recognisable please try again")
+    while True:
+        try:
+            a = input("Do you want to change it? (y/n): ").strip().lower()
+            if a in ("y", "yes"):
+                chg_main_dir()
+                return True
+            elif a in ("n", "no"):
+                return False
+            else:
+                raise ValueError("Answer not recognizable")
+        except ValueError as e:
+            print(e)
 
 def chg_main_dir():
     global main_dir
-
-    #loop holder
     a="n"
     while (a=="n" or a=="no"):
         main_dir=input("Write your new directory : ")
@@ -37,8 +41,6 @@ def chg_main_dir():
             print("The path you entered is INVALID please try again")
             a="n"
     return False
-
-#create_user_file
 
 def creat_usr_file(main_dir):
 
@@ -54,9 +56,9 @@ def creat_usr_file(main_dir):
             return False
     
     file=open("user_db.csv","w")
+    file.close()
     return True
 
-#list users
 def list_users():
     if os.path.isfile("user_db.csv"):
         with open("user_db.csv", "r") as file:
@@ -67,11 +69,10 @@ def list_users():
             if parts:
                 print(parts[0])
 
-#Check for image
 
 def check_image(img):
-    files=os.listdir
+    files=str(os.listdir())
 
-    if img in files:
+    if str(img) in files:
         return True
     return False

@@ -1,2 +1,2 @@
-admin,admin
-user,user
+admin,admin,True
+user,user,False
